@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resource Shop — The Practical Pastor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink:       '#1A1612',
+            charcoal:  '#3D3833',
+            sienna:    '#8B3A2E',
+            parchment: '#F4EDE2',
+            stone:     '#C9C2B4',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      color: #1A1612;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Ornament ───────────────────────────────────────────── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8B3A2E;
+    }
+    .ornament::before, .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #8B3A2E;
+      opacity: 0.35;
+    }
+    .ornament.left::after  { display: none; }
+    .ornament.left::before { max-width: 2.5rem; }
+
+    /* ── Nav link ───────────────────────────────────────────── */
+    .nav-link {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #3D3833;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #8B3A2E;
+      transition: width 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-link:hover { color: #8B3A2E; }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:focus-visible { outline: 2px solid #8B3A2E; outline-offset: 4px; border-radius: 2px; }
+
+    /* ── Buttons ────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: #8B3A2E;
+      color: #F4EDE2;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.875rem 1.75rem;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease,
+                  transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.2s ease;
+      box-shadow: 0 4px 14px rgba(139,58,46,0.3), 0 1px 3px rgba(26,22,18,0.15);
+      width: 100%;
+    }
+    .btn-primary:hover {
+      background: #7a3226;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(139,58,46,0.36), 0 2px 6px rgba(26,22,18,0.18);
+    }
+    .btn-primary:active  { transform: translateY(0); }
+    .btn-primary:focus-visible { outline: 2px solid #8B3A2E; outline-offset: 3px; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: #8B3A2E;
+      border: 1.5px solid #8B3A2E;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.875rem 1.75rem;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease,
+                  transform 0.18s cubic-bezier(0.34,1.56,0.64,1);
+      width: 100%;
+    }
+    .btn-outline:hover {
+      background: rgba(139,58,46,0.06);
+      transform: translateY(-2px);
+    }
+    .btn-outline:active  { transform: translateY(0); }
+    .btn-outline:focus-visible { outline: 2px solid #8B3A2E; outline-offset: 3px; }
+
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #8B3A2E;
+      color: #F4EDE2;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.75rem 1.5rem;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.18s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 3px 10px rgba(139,58,46,0.28);
+    }
+    .btn-nav:hover { background: #7a3226; transform: translateY(-1px); }
+    .btn-nav:focus-visible { outline: 2px solid #8B3A2E; outline-offset: 3px; }
+
+    /* ── Filter tab ─────────────────────────────────────────── */
+    .filter-tab {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.25rem;
+      border-radius: 2px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      background: transparent;
+      color: #3D3833;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      white-space: nowrap;
+    }
+    .filter-tab:hover {
+      color: #8B3A2E;
+      border-color: rgba(139,58,46,0.3);
+    }
+    .filter-tab.active {
+      color: #8B3A2E;
+      border-color: #8B3A2E;
+      background: rgba(139,58,46,0.06);
+    }
+    .filter-tab:focus-visible { outline: 2px solid #8B3A2E; outline-offset: 3px; }
+
+    /* ── Product card ───────────────────────────────────────── */
+    .product-card {
+      background: #fff;
+      border: 1px solid rgba(201,194,180,0.5);
+      border-radius: 3px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.25s ease;
+      box-shadow: 0 2px 8px rgba(26,22,18,0.05), 0 1px 2px rgba(26,22,18,0.04);
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(26,22,18,0.1), 0 4px 10px rgba(26,22,18,0.06);
+    }
+    .product-card .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+    }
+
+    /* ── Tag pill ───────────────────────────────────────────── */
+    .tag-pill {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.625rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: #8B3A2E;
+      color: #F4EDE2;
+      padding: 0.2rem 0.625rem;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    /* ── Badge (Best Value, Popular, etc.) ──────────────────── */
+    .badge {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.625rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.625rem;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .badge-gold {
+      background: #C9A84C;
+      color: #1A1612;
+    }
+    .badge-sienna {
+      background: #8B3A2E;
+      color: #F4EDE2;
+    }
+    .badge-stone {
+      background: #C9C2B4;
+      color: #1A1612;
+    }
+
+    /* ── Price ──────────────────────────────────────────────── */
+    .price-tag {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.625rem;
+      color: #1A1612;
+      letter-spacing: -0.02em;
+    }
+    .price-period {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      color: #C9C2B4;
+      letter-spacing: 0.05em;
+    }
+    .price-was {
+      font-family: 'Lora', serif;
+      font-size: 0.875rem;
+      color: #C9C2B4;
+      text-decoration: line-through;
+    }
+
+    /* ── Featured bundle card ───────────────────────────────── */
+    .bundle-card {
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── Social icon ────────────────────────────────────────── */
+    .social-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 3px;
+      background: rgba(244,237,226,0.07);
+      color: rgba(244,237,226,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .social-icon:hover { background: rgba(244,237,226,0.13); color: #F4EDE2; }
+
+    /* ── Cart sidebar (stub) ────────────────────────────────── */
+    .cart-btn {
+      position: relative;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 2px;
+      background: rgba(139,58,46,0.1);
+      border: 1.5px solid rgba(139,58,46,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #8B3A2E;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .cart-btn:hover { background: rgba(139,58,46,0.15); border-color: #8B3A2E; }
+    .cart-count {
+      position: absolute;
+      top: -0.375rem;
+      right: -0.375rem;
+      width: 1.125rem;
+      height: 1.125rem;
+      background: #8B3A2E;
+      color: #F4EDE2;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.6rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Product grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Card image area */
+    .card-image {
+      position: relative;
+      height: 10rem;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .card-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,22,18,0.4) 0%, transparent 55%);
+    }
+    .card-image-badge {
+      position: absolute;
+      top: 0.875rem;
+      left: 0.875rem;
+    }
+    .card-image-extra {
+      position: absolute;
+      top: 0.875rem;
+      right: 0.875rem;
+    }
+
+    /* Grain on dark sections */
+    .grain-dark { position: relative; overflow: hidden; }
+    .grain-dark::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+    .grain-dark > * { position: relative; z-index: 2; }
+
+    /* Membership highlight */
+    .membership-card {
+      border: 2px solid #8B3A2E;
+      box-shadow: 0 0 0 4px rgba(139,58,46,0.12), 0 16px 40px rgba(26,22,18,0.12);
+    }
+
+    /* Read more link */
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8B3A2E;
+      text-decoration: none;
+      transition: gap 0.2s ease, color 0.2s ease;
+    }
+    .read-more:hover { color: #7a3226; gap: 0.625rem; }
+
+    /* What's included checklist */
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.625rem;
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #3D3833;
+    }
+    .check-item svg { flex-shrink: 0; margin-top: 0.1rem; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════════════════ -->
+<header class="sticky top-0 z-50 bg-parchment"
+  style="border-bottom:1px solid rgba(201,194,180,0.4);
+         box-shadow:0 2px 16px rgba(26,22,18,0.07);">
+  <div style="max-width:80rem;margin:0 auto;padding:0 1.5rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;height:5rem;gap:1.5rem;">
+
+      <!-- Logo -->
+      <a href="index.html" style="flex-shrink:0;text-decoration:none;"
+        aria-label="The Practical Pastor — Home">
+        <img src="brand_assets/Logo Variation 1.png" alt="The Practical Pastor"
+          style="height:2.75rem;width:auto;" />
+      </a>
+
+      <!-- Nav -->
+      <nav style="display:flex;align-items:center;gap:2rem;" class="hidden md:flex"
+        aria-label="Shop navigation">
+        <a href="#guides"    class="nav-link">Guides</a>
+        <a href="#templates" class="nav-link">Templates</a>
+        <a href="#courses"   class="nav-link">Courses</a>
+        <a href="#bundles"   class="nav-link">Bundles</a>
+      </nav>
+
+      <!-- Right side -->
+      <div style="display:flex;align-items:center;gap:0.875rem;flex-shrink:0;">
+        <a href="index.html" style="font-family:'Montserrat',sans-serif;font-weight:600;
+          font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;
+          color:#C9C2B4;text-decoration:none;transition:color 0.2s;"
+          onmouseover="this.style.color='#3D3833'" onmouseout="this.style.color='#C9C2B4'"
+          class="hidden md:inline">
+          ← Back to Site
+        </a>
+        <!-- Cart stub -->
+        <button class="cart-btn" aria-label="Shopping cart (0 items)" id="cart-btn">
+          <svg style="width:1.125rem;height:1.125rem;" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+          </svg>
+          <span class="cart-count" id="cart-count" aria-live="polite">0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SHOP HERO
+══════════════════════════════════════════════════════════ -->
+<section class="grain-dark" style="background:#1A1612;padding:4rem 1.5rem;">
+  <div style="max-width:80rem;margin:0 auto;">
+    <div style="max-width:42rem;">
+
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+        <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.6875rem;
+          letter-spacing:0.2em;text-transform:uppercase;color:#8B3A2E;">Resource Shop</span>
+        <span style="flex:1;height:1px;background:#8B3A2E;opacity:0.35;"></span>
+      </div>
+
+      <h1 style="font-family:'Montserrat',sans-serif;font-weight:800;
+        font-size:clamp(2rem,4.5vw,3.5rem);line-height:1.07;
+        letter-spacing:-0.035em;color:#F4EDE2;">
+        Tools Built for Ministry.<br/>
+        <span style="color:#8B3A2E;">Priced for Pastors.</span>
+      </h1>
+      <p style="margin-top:1.25rem;font-family:'Lora',serif;font-size:1.0625rem;
+        line-height:1.75;color:rgba(244,237,226,0.6);max-width:32rem;">
+        Practical guides, ready-to-use templates, and on-demand courses — every resource is field-tested and built for the realities of local church ministry.
+      </p>
+
+      <!-- Stats row -->
+      <div style="display:flex;flex-wrap:wrap;gap:2rem;margin-top:2.25rem;
+        padding-top:2rem;border-top:1px solid rgba(244,237,226,0.1);">
+        <div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.75rem;
+            color:#F4EDE2;letter-spacing:-0.02em;">200+</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:0.6875rem;
+            letter-spacing:0.1em;text-transform:uppercase;color:#C9C2B4;margin-top:0.2rem;">Resources Available</div>
+        </div>
+        <div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.75rem;
+            color:#F4EDE2;letter-spacing:-0.02em;">500+</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:0.6875rem;
+            letter-spacing:0.1em;text-transform:uppercase;color:#C9C2B4;margin-top:0.2rem;">Pastors Equipped</div>
+        </div>
+        <div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.75rem;
+            color:#F4EDE2;letter-spacing:-0.02em;">Instant</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:0.6875rem;
+            letter-spacing:0.1em;text-transform:uppercase;color:#C9C2B4;margin-top:0.2rem;">Digital Download</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     FILTER TABS
+══════════════════════════════════════════════════════════ -->
+<div style="background:#F4EDE2;border-bottom:1px solid rgba(201,194,180,0.4);
+  position:sticky;top:5rem;z-index:40;">
+  <div style="max-width:80rem;margin:0 auto;padding:0 1.5rem;">
+    <div style="display:flex;gap:0.5rem;overflow-x:auto;padding:0.875rem 0;
+      scrollbar-width:none;" class="hide-scrollbar">
+      <button class="filter-tab active" data-filter="all"    onclick="filterProducts(this,'all')">All Resources</button>
+      <button class="filter-tab"        data-filter="guide"  onclick="filterProducts(this,'guide')">Guides &amp; Ebooks</button>
+      <button class="filter-tab"        data-filter="template" onclick="filterProducts(this,'template')">Templates</button>
+      <button class="filter-tab"        data-filter="course" onclick="filterProducts(this,'course')">Courses</button>
+      <button class="filter-tab"        data-filter="bundle" onclick="filterProducts(this,'bundle')">Bundles</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     FEATURED BUNDLE
+══════════════════════════════════════════════════════════ -->
+<section id="bundles" style="background:#fff;padding:4rem 1.5rem 0;">
+  <div style="max-width:80rem;margin:0 auto;">
+    <div class="ornament left" style="margin-bottom:1.5rem;">
+      <span>Featured Bundle</span>
+    </div>
+
+    <!-- Bundle card -->
+    <div class="bundle-card grain-dark" style="background:#3D3833;margin-bottom:1rem;"
+      data-category="bundle">
+      <!-- Depth gradient -->
+      <div style="position:absolute;inset:0;pointer-events:none;
+        background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(139,58,46,0.25) 0%,transparent 65%);"></div>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:0;"
+        class="md:grid-cols-2">
+        <!-- Image side -->
+        <div style="position:relative;min-height:16rem;overflow:hidden;">
+          <img src="https://placehold.co/800x400/1A1612/C9C2B4?text=Complete+Ministry+Toolkit"
+            alt="Complete Ministry Toolkit"
+            style="width:100%;height:100%;object-fit:cover;display:block;min-height:16rem;" />
+          <div style="position:absolute;inset:0;
+            background:linear-gradient(to right,rgba(61,56,51,0) 60%,rgba(61,56,51,0.9) 100%);"></div>
+          <div style="position:absolute;top:1.25rem;left:1.25rem;display:flex;gap:0.5rem;">
+            <span class="badge badge-gold">Best Value</span>
+            <span class="badge badge-sienna">Bundle</span>
+          </div>
+        </div>
+
+        <!-- Text side -->
+        <div style="padding:2.5rem;display:flex;flex-direction:column;justify-content:center;">
+          <h2 style="font-family:'Montserrat',sans-serif;font-weight:800;
+            font-size:clamp(1.5rem,2.5vw,2.125rem);line-height:1.15;
+            letter-spacing:-0.025em;color:#F4EDE2;">
+            The Complete Ministry Toolkit
+          </h2>
+          <p style="margin-top:0.875rem;font-family:'Lora',serif;font-size:0.9375rem;
+            line-height:1.72;color:rgba(244,237,226,0.65);">
+            Everything a pastor needs in one bundle — sermon resources, admin templates, pastoral care guide, and the Preaching Foundations course. Regularly $186, yours for one price.
+          </p>
+
+          <!-- Included list -->
+          <ul style="margin-top:1.25rem;display:flex;flex-direction:column;gap:0.5rem;">
+            <li class="check-item" style="color:rgba(244,237,226,0.75);">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Complete Sermon Prep System
+            </li>
+            <li class="check-item" style="color:rgba(244,237,226,0.75);">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Church Administration Bundle
+            </li>
+            <li class="check-item" style="color:rgba(244,237,226,0.75);">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Pastoral Care Handbook
+            </li>
+            <li class="check-item" style="color:rgba(244,237,226,0.75);">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Preaching Foundations Course
+            </li>
+          </ul>
+
+          <!-- Price + CTA -->
+          <div style="margin-top:1.75rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+            <div>
+              <div style="display:flex;align-items:baseline;gap:0.5rem;">
+                <span class="price-tag" style="color:#F4EDE2;font-size:2.25rem;">$97</span>
+                <span class="price-was">$186</span>
+              </div>
+              <div style="font-family:'Montserrat',sans-serif;font-size:0.6875rem;
+                letter-spacing:0.08em;color:rgba(244,237,226,0.35);margin-top:0.125rem;">
+                One-time purchase · Instant download
+              </div>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'Complete Ministry Toolkit','$97')">
+              Get the Bundle
+              <svg style="width:0.875rem;height:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     GUIDES & EBOOKS
+══════════════════════════════════════════════════════════ -->
+<section id="guides" style="padding:4rem 1.5rem;">
+  <div style="max-width:80rem;margin:0 auto;">
+    <div class="ornament left" style="margin-bottom:1.75rem;">
+      <span>Guides &amp; Ebooks</span>
+    </div>
+
+    <div class="product-grid" id="guide-grid">
+
+      <!-- Product: Pastoral Care Handbook -->
+      <div class="product-card" data-category="guide">
+        <div class="card-image">
+          <img src="https://placehold.co/600x300/8B3A2E/F4EDE2?text=Pastoral+Care+Handbook" alt="Pastoral Care Handbook" />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-badge"><span class="tag-pill">Guide</span></div>
+        </div>
+        <div class="card-body">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:1.0625rem;line-height:1.3;letter-spacing:-0.01em;color:#1A1612;">
+            Pastoral Care Handbook
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.7;color:#3D3833;flex:1;">
+            A practical guide to counseling, hospital visits, crisis care, and grief support — the shepherding work no seminary fully prepares you for.
+          </p>
+          <div style="margin-top:0.875rem;display:flex;align-items:center;gap:0.75rem;
+            flex-wrap:wrap;font-family:'Lora',serif;font-size:0.8125rem;color:#C9C2B4;">
+            <span>📄 PDF · 68 pages</span>
+            <span>⚡ Instant download</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;
+            border-top:1px solid rgba(201,194,180,0.4);
+            display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <div>
+              <span class="price-tag">$24</span>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'Pastoral Care Handbook','$24')">
+              Get It
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product: Healthy Church Audit -->
+      <div class="product-card" data-category="guide">
+        <div class="card-image">
+          <img src="https://placehold.co/600x300/3D3833/C9C2B4?text=Healthy+Church+Audit" alt="Healthy Church Audit" />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-badge"><span class="tag-pill">Guide</span></div>
+          <div class="card-image-extra"><span class="badge badge-stone">New</span></div>
+        </div>
+        <div class="card-body">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:1.0625rem;line-height:1.3;letter-spacing:-0.01em;color:#1A1612;">
+            The Healthy Church Audit
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.7;color:#3D3833;flex:1;">
+            A self-assessment tool and action guide to diagnose the spiritual, relational, and organizational health of your congregation.
+          </p>
+          <div style="margin-top:0.875rem;display:flex;align-items:center;gap:0.75rem;
+            flex-wrap:wrap;font-family:'Lora',serif;font-size:0.8125rem;color:#C9C2B4;">
+            <span>📄 PDF · 42 pages</span>
+            <span>⚡ Instant download</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;
+            border-top:1px solid rgba(201,194,180,0.4);
+            display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <div>
+              <span class="price-tag">$19</span>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'Healthy Church Audit','$19')">
+              Get It
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product: Preaching Difficult Texts -->
+      <div class="product-card" data-category="guide">
+        <div class="card-image">
+          <img src="https://placehold.co/600x300/1A1612/C9C2B4?text=Preaching+Difficult+Texts" alt="Preaching Difficult Texts" />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-badge"><span class="tag-pill">Guide</span></div>
+        </div>
+        <div class="card-body">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:1.0625rem;line-height:1.3;letter-spacing:-0.01em;color:#1A1612;">
+            Preaching Difficult Texts
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.7;color:#3D3833;flex:1;">
+            Frameworks for approaching passages on violence, sexuality, judgment, and doubt — with theological integrity and pastoral care for your congregation.
+          </p>
+          <div style="margin-top:0.875rem;display:flex;align-items:center;gap:0.75rem;
+            flex-wrap:wrap;font-family:'Lora',serif;font-size:0.8125rem;color:#C9C2B4;">
+            <span>📄 PDF · 54 pages</span>
+            <span>⚡ Instant download</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;
+            border-top:1px solid rgba(201,194,180,0.4);
+            display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <div>
+              <span class="price-tag">$22</span>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'Preaching Difficult Texts','$22')">
+              Get It
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     TEMPLATES
+══════════════════════════════════════════════════════════ -->
+<section id="templates" style="background:#F4EDE2;padding:4rem 1.5rem;">
+  <div style="max-width:80rem;margin:0 auto;">
+    <div class="ornament left" style="margin-bottom:1.75rem;">
+      <span>Templates &amp; Toolkits</span>
+    </div>
+
+    <div class="product-grid">
+
+      <!-- Product: Church Administration Bundle -->
+      <div class="product-card" data-category="template">
+        <div class="card-image">
+          <img src="https://placehold.co/600x300/C9C2B4/3D3833?text=Admin+Bundle" alt="Church Administration Bundle" />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-badge"><span class="tag-pill">Template Pack</span></div>
+          <div class="card-image-extra"><span class="badge badge-sienna">Popular</span></div>
+        </div>
+        <div class="card-body">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:1.0625rem;line-height:1.3;letter-spacing:-0.01em;color:#1A1612;">
+            Church Administration Bundle
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.7;color:#3D3833;flex:1;">
+            30+ editable templates: elder meeting agendas, policy handbooks, membership agreements, job descriptions, org charts, and annual review forms.
+          </p>
+          <div style="margin-top:0.875rem;display:flex;align-items:center;gap:0.75rem;
+            flex-wrap:wrap;font-family:'Lora',serif;font-size:0.8125rem;color:#C9C2B4;">
+            <span>📁 30+ templates</span>
+            <span>📝 Word &amp; Google Docs</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;
+            border-top:1px solid rgba(201,194,180,0.4);
+            display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <div>
+              <span class="price-tag">$39</span>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'Church Administration Bundle','$39')">
+              Get It
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product: Sermon Series Starter Kit -->
+      <div class="product-card" data-category="template">
+        <div class="card-image">
+          <img src="https://placehold.co/600x300/8B3A2E/F4EDE2?text=Sermon+Series+Starter" alt="Sermon Series Starter Kit" />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-badge"><span class="tag-pill">Template Pack</span></div>
+        </div>
+        <div class="card-body">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:1.0625rem;line-height:1.3;letter-spacing:-0.01em;color:#1A1612;">
+            Sermon Series Starter Kit
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.7;color:#3D3833;flex:1;">
+            Five complete 4-week series outlines — ready to adapt, with text selections, illustrations, discussion questions, and application points for each message.
+          </p>
+          <div style="margin-top:0.875rem;display:flex;align-items:center;gap:0.75rem;
+            flex-wrap:wrap;font-family:'Lora',serif;font-size:0.8125rem;color:#C9C2B4;">
+            <span>📄 5 complete series</span>
+            <span>📝 20 message outlines</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;
+            border-top:1px solid rgba(201,194,180,0.4);
+            display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <div>
+              <span class="price-tag">$49</span>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'Sermon Series Starter Kit','$49')">
+              Get It
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product: New Member Integration Pack -->
+      <div class="product-card" data-category="template">
+        <div class="card-image">
+          <img src="https://placehold.co/600x300/3D3833/F4EDE2?text=New+Member+Pack" alt="New Member Integration Pack" />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-badge"><span class="tag-pill">Template Pack</span></div>
+        </div>
+        <div class="card-body">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:1.0625rem;line-height:1.3;letter-spacing:-0.01em;color:#1A1612;">
+            New Member Integration Pack
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.7;color:#3D3833;flex:1;">
+            Membership class curriculum, welcome packet, spiritual gifts assessment, and first-year connection pathway — plug in and personalize for your church.
+          </p>
+          <div style="margin-top:0.875rem;display:flex;align-items:center;gap:0.75rem;
+            flex-wrap:wrap;font-family:'Lora',serif;font-size:0.8125rem;color:#C9C2B4;">
+            <span>📁 Full curriculum kit</span>
+            <span>📝 Editable files</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;
+            border-top:1px solid rgba(201,194,180,0.4);
+            display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <div>
+              <span class="price-tag">$29</span>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'New Member Integration Pack','$29')">
+              Get It
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product: Budget & Finance Templates -->
+      <div class="product-card" data-category="template">
+        <div class="card-image">
+          <img src="https://placehold.co/600x300/C9C2B4/1A1612?text=Budget+%26+Finance" alt="Budget & Finance Templates" />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-badge"><span class="tag-pill">Template Pack</span></div>
+        </div>
+        <div class="card-body">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:1.0625rem;line-height:1.3;letter-spacing:-0.01em;color:#1A1612;">
+            Church Budget &amp; Finance Templates
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.7;color:#3D3833;flex:1;">
+            Annual budget worksheets, expense tracking sheets, giving report templates, and a finance policy handbook — built for churches of any size.
+          </p>
+          <div style="margin-top:0.875rem;display:flex;align-items:center;gap:0.75rem;
+            flex-wrap:wrap;font-family:'Lora',serif;font-size:0.8125rem;color:#C9C2B4;">
+            <span>📊 Excel &amp; Google Sheets</span>
+            <span>⚡ Instant download</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;
+            border-top:1px solid rgba(201,194,180,0.4);
+            display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <div>
+              <span class="price-tag">$19</span>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'Church Budget & Finance Templates','$19')">
+              Get It
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     COURSES
+══════════════════════════════════════════════════════════ -->
+<section id="courses" style="background:#fff;padding:4rem 1.5rem;">
+  <div style="max-width:80rem;margin:0 auto;">
+    <div class="ornament left" style="margin-bottom:1.75rem;">
+      <span>Online Courses</span>
+    </div>
+
+    <div class="product-grid">
+
+      <!-- Product: Preaching Foundations Course -->
+      <div class="product-card" data-category="course">
+        <div class="card-image" style="height:12rem;">
+          <img src="https://placehold.co/600x320/1A1612/8B3A2E?text=Preaching+Foundations" alt="Preaching Foundations Course" style="height:12rem;" />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-badge"><span class="tag-pill">Course</span></div>
+          <div class="card-image-extra"><span class="badge badge-sienna">Bestseller</span></div>
+        </div>
+        <div class="card-body">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:1.0625rem;line-height:1.3;letter-spacing:-0.01em;color:#1A1612;">
+            Preaching Foundations
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.7;color:#3D3833;flex:1;">
+            An 8-module on-demand course on expository structure, illustrations, application, and delivery — the art and craft of weekly preaching, made practical.
+          </p>
+          <div style="margin-top:0.875rem;display:flex;align-items:center;gap:0.75rem;
+            flex-wrap:wrap;font-family:'Lora',serif;font-size:0.8125rem;color:#C9C2B4;">
+            <span>🎬 8 modules</span>
+            <span>⏱ ~6 hrs content</span>
+            <span>📝 Workbook included</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;
+            border-top:1px solid rgba(201,194,180,0.4);
+            display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <div>
+              <span class="price-tag">$59</span>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'Preaching Foundations Course','$59')">
+              Enroll Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product: Elder Development Course -->
+      <div class="product-card" data-category="course">
+        <div class="card-image" style="height:12rem;">
+          <img src="https://placehold.co/600x320/8B3A2E/F4EDE2?text=Elder+Development" alt="Elder Development Course" style="height:12rem;" />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-badge"><span class="tag-pill">Course</span></div>
+        </div>
+        <div class="card-body">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:1.0625rem;line-height:1.3;letter-spacing:-0.01em;color:#1A1612;">
+            Developing Healthy Elders
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.7;color:#3D3833;flex:1;">
+            A 6-week course on elder qualifications, board culture, conflict navigation, and shared leadership — with a ready-to-use training curriculum for your board.
+          </p>
+          <div style="margin-top:0.875rem;display:flex;align-items:center;gap:0.75rem;
+            flex-wrap:wrap;font-family:'Lora',serif;font-size:0.8125rem;color:#C9C2B4;">
+            <span>🎬 6 modules</span>
+            <span>⏱ ~4.5 hrs content</span>
+            <span>📁 Board curriculum kit</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;
+            border-top:1px solid rgba(201,194,180,0.4);
+            display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <div>
+              <span class="price-tag">$79</span>
+            </div>
+            <button class="btn-primary" style="width:auto;flex-shrink:0;"
+              onclick="addToCart(this,'Developing Healthy Elders Course','$79')">
+              Enroll Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     MEMBERSHIP CALLOUT
+══════════════════════════════════════════════════════════ -->
+<section style="background:#F4EDE2;padding:4rem 1.5rem;">
+  <div style="max-width:80rem;margin:0 auto;">
+    <div class="ornament" style="margin-bottom:2rem;">
+      <span>Full Access Membership</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:1.5rem;"
+      class="md:grid-cols-2">
+
+      <!-- Annual membership -->
+      <div class="product-card membership-card" data-category="bundle"
+        style="border-radius:3px;">
+        <div class="card-body" style="padding:2.25rem;">
+          <!-- Top badge -->
+          <div style="display:flex;align-items:center;justify-content:space-between;
+            margin-bottom:1.5rem;">
+            <span class="badge badge-gold" style="font-size:0.6875rem;padding:0.3rem 0.875rem;">
+              Best Value
+            </span>
+            <img src="brand_assets/Icon Only.png" alt="" aria-hidden="true"
+              style="height:2.5rem;width:auto;opacity:0.2;" />
+          </div>
+
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:800;
+            font-size:1.5rem;line-height:1.2;letter-spacing:-0.025em;color:#1A1612;">
+            Annual Membership
+          </h3>
+          <p style="margin-top:0.75rem;font-family:'Lora',serif;font-size:0.9375rem;
+            line-height:1.72;color:#3D3833;">
+            Unlimited access to the full resource library, new releases as they drop, private community forum, and monthly Q&amp;A calls.
+          </p>
+
+          <!-- Includes -->
+          <ul style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0.625rem;">
+            <li class="check-item">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Every guide, template pack, and course
+            </li>
+            <li class="check-item">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              New resources added regularly
+            </li>
+            <li class="check-item">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Private community &amp; peer support
+            </li>
+            <li class="check-item">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Monthly live Q&amp;A calls
+            </li>
+            <li class="check-item">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Cancel anytime
+            </li>
+          </ul>
+
+          <!-- Price -->
+          <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(201,194,180,0.5);">
+            <div style="display:flex;align-items:baseline;gap:0.375rem;">
+              <span class="price-tag" style="font-size:2.5rem;">$97</span>
+              <span class="price-period">/ year</span>
+            </div>
+            <div style="font-family:'Lora',serif;font-style:italic;font-size:0.875rem;
+              color:#C9C2B4;margin-top:0.25rem;">
+              Less than $9/month — that's less than a lunch out.
+            </div>
+            <button class="btn-primary" style="margin-top:1.25rem;"
+              onclick="addToCart(this,'Annual Membership','$97/yr')">
+              Join as a Member
+              <svg style="width:0.875rem;height:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly membership -->
+      <div class="product-card" data-category="bundle" style="border-radius:3px;">
+        <div class="card-body" style="padding:2.25rem;">
+          <div style="margin-bottom:1.5rem;">
+            <span class="badge badge-stone">Monthly</span>
+          </div>
+
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:800;
+            font-size:1.5rem;line-height:1.2;letter-spacing:-0.025em;color:#1A1612;">
+            Monthly Membership
+          </h3>
+          <p style="margin-top:0.75rem;font-family:'Lora',serif;font-size:0.9375rem;
+            line-height:1.72;color:#3D3833;">
+            Same full access, month-to-month flexibility. Great if you want to try it first before committing to an annual plan.
+          </p>
+
+          <ul style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0.625rem;">
+            <li class="check-item">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Full resource library access
+            </li>
+            <li class="check-item">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Private community &amp; peer support
+            </li>
+            <li class="check-item">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Monthly live Q&amp;A calls
+            </li>
+            <li class="check-item">
+              <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              Cancel anytime
+            </li>
+          </ul>
+
+          <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(201,194,180,0.5);">
+            <div style="display:flex;align-items:baseline;gap:0.375rem;">
+              <span class="price-tag" style="font-size:2.5rem;">$12</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <div style="font-family:'Lora',serif;font-style:italic;font-size:0.875rem;
+              color:#C9C2B4;margin-top:0.25rem;">
+              Save 33% by switching to annual anytime.
+            </div>
+            <button class="btn-outline" style="margin-top:1.25rem;"
+              onclick="addToCart(this,'Monthly Membership','$12/mo')">
+              Start Monthly
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     TRUST / GUARANTEE STRIP
+══════════════════════════════════════════════════════════ -->
+<section class="grain-dark" style="background:#3D3833;padding:3rem 1.5rem;">
+  <div style="max-width:80rem;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:2rem;">
+
+      <div style="display:flex;align-items:flex-start;gap:1rem;">
+        <div style="width:2.75rem;height:2.75rem;border-radius:3px;flex-shrink:0;
+          background:rgba(139,58,46,0.25);display:flex;align-items:center;justify-content:center;">
+          <svg style="width:1.25rem;height:1.25rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+          </svg>
+        </div>
+        <div>
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9375rem;
+            color:#F4EDE2;margin-bottom:0.375rem;">30-Day Guarantee</h4>
+          <p style="font-family:'Lora',serif;font-size:0.875rem;line-height:1.65;
+            color:rgba(244,237,226,0.5);">
+            Not satisfied? Email us within 30 days for a full refund, no questions asked.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:1rem;">
+        <div style="width:2.75rem;height:2.75rem;border-radius:3px;flex-shrink:0;
+          background:rgba(139,58,46,0.25);display:flex;align-items:center;justify-content:center;">
+          <svg style="width:1.25rem;height:1.25rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+          </svg>
+        </div>
+        <div>
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9375rem;
+            color:#F4EDE2;margin-bottom:0.375rem;">Instant Download</h4>
+          <p style="font-family:'Lora',serif;font-size:0.875rem;line-height:1.65;
+            color:rgba(244,237,226,0.5);">
+            All digital resources delivered immediately after purchase. No waiting.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:1rem;">
+        <div style="width:2.75rem;height:2.75rem;border-radius:3px;flex-shrink:0;
+          background:rgba(139,58,46,0.25);display:flex;align-items:center;justify-content:center;">
+          <svg style="width:1.25rem;height:1.25rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+          </svg>
+        </div>
+        <div>
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9375rem;
+            color:#F4EDE2;margin-bottom:0.375rem;">Built by Practitioners</h4>
+          <p style="font-family:'Lora',serif;font-size:0.875rem;line-height:1.65;
+            color:rgba(244,237,226,0.5);">
+            Every resource comes from pastors doing real local church ministry, not just theorists.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:1rem;">
+        <div style="width:2.75rem;height:2.75rem;border-radius:3px;flex-shrink:0;
+          background:rgba(139,58,46,0.25);display:flex;align-items:center;justify-content:center;">
+          <svg style="width:1.25rem;height:1.25rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+          </svg>
+        </div>
+        <div>
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9375rem;
+            color:#F4EDE2;margin-bottom:0.375rem;">Secure Checkout</h4>
+          <p style="font-family:'Lora',serif;font-size:0.875rem;line-height:1.65;
+            color:rgba(244,237,226,0.5);">
+            Payments are processed securely. We never store your card details.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════════ -->
+<footer style="background:#1A1612;border-top:1px solid rgba(201,194,180,0.07);">
+  <div style="max-width:80rem;margin:0 auto;padding:3rem 1.5rem 2rem;">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;
+      justify-content:space-between;gap:2rem;margin-bottom:2.5rem;">
+      <div>
+        <img src="brand_assets/Primary Logo.png" alt="The Practical Pastor"
+          style="height:3rem;width:auto;filter:brightness(0) invert(1);opacity:0.7;" />
+        <p style="font-family:'Lora',serif;font-size:0.9rem;line-height:1.65;
+          color:rgba(244,237,226,0.38);margin-top:0.625rem;max-width:18rem;">
+          Where theology meets real-life ministry.
+        </p>
+      </div>
+      <div style="display:flex;gap:0.625rem;">
+        <a href="#" class="social-icon" aria-label="Twitter / X">
+          <svg style="width:1rem;height:1rem;" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.741l7.73-8.835L1.254 2.25H8.08l4.258 5.626zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" class="social-icon" aria-label="Facebook">
+          <svg style="width:1rem;height:1rem;" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="#" class="social-icon" aria-label="Instagram">
+          <svg style="width:1rem;height:1rem;" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid rgba(244,237,226,0.07);padding-top:1.5rem;
+      display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;">
+      <p style="font-family:'Montserrat',sans-serif;font-size:0.6875rem;letter-spacing:0.05em;
+        color:rgba(244,237,226,0.2);">
+        © 2026 The Practical Pastor. All rights reserved.
+      </p>
+      <div style="display:flex;gap:1.5rem;">
+        <a href="index.html" style="font-family:'Montserrat',sans-serif;font-size:0.6875rem;
+          letter-spacing:0.05em;color:rgba(244,237,226,0.25);text-decoration:none;
+          transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.6)'" onmouseout="this.style.color='rgba(244,237,226,0.25)'">
+          Home
+        </a>
+        <a href="#" style="font-family:'Montserrat',sans-serif;font-size:0.6875rem;
+          letter-spacing:0.05em;color:rgba(244,237,226,0.25);text-decoration:none;
+          transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.6)'" onmouseout="this.style.color='rgba(244,237,226,0.25)'">
+          Privacy Policy
+        </a>
+        <a href="#" style="font-family:'Montserrat',sans-serif;font-size:0.6875rem;
+          letter-spacing:0.05em;color:rgba(244,237,226,0.25);text-decoration:none;
+          transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.6)'" onmouseout="this.style.color='rgba(244,237,226,0.25)'">
+          Terms
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     CART TOAST (stub)
+══════════════════════════════════════════════════════════ -->
+<div id="cart-toast" style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:100;
+  background:#1A1612;border:1px solid rgba(139,58,46,0.4);border-radius:3px;
+  padding:1rem 1.25rem;max-width:18rem;
+  box-shadow:0 12px 32px rgba(26,22,18,0.35);
+  transform:translateY(6rem);opacity:0;
+  transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s ease;
+  pointer-events:none;">
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <div style="width:2rem;height:2rem;border-radius:50%;background:rgba(139,58,46,0.2);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg style="width:1rem;height:1rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+      </svg>
+    </div>
+    <div>
+      <p id="toast-title" style="font-family:'Montserrat',sans-serif;font-weight:700;
+        font-size:0.8125rem;color:#F4EDE2;"></p>
+      <p style="font-family:'Lora',serif;font-size:0.8125rem;color:rgba(244,237,226,0.5);
+        margin-top:0.125rem;">Added to cart</p>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  /* ── Cart counter (stub) ─────────────────────────────────────── */
+  let cartCount = 0;
+
+  function addToCart(btn, name, price) {
+    cartCount++;
+    document.getElementById('cart-count').textContent = cartCount;
+    document.getElementById('toast-title').textContent = name;
+
+    const toast = document.getElementById('cart-toast');
+    toast.style.transform = 'translateY(0)';
+    toast.style.opacity   = '1';
+    toast.style.pointerEvents = 'auto';
+
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+      toast.style.transform = 'translateY(6rem)';
+      toast.style.opacity   = '0';
+      toast.style.pointerEvents = 'none';
+    }, 3000);
+  }
+
+  /* ── Category filter ─────────────────────────────────────────── */
+  function filterProducts(tab, category) {
+    // Update active tab
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    // Show/hide cards
+    document.querySelectorAll('[data-category]').forEach(card => {
+      if (category === 'all' || card.dataset.category === category) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

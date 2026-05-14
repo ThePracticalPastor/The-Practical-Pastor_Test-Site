@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Practical Pastor Group</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink:       '#1A1612',
+            charcoal:  '#3D3833',
+            sienna:    '#8B3A2E',
+            parchment: '#F4EDE2',
+            stone:     '#C9C2B4',
+          },
+          fontFamily: {
+            display: ['Montserrat', 'sans-serif'],
+            body:    ['Lora', 'Georgia', 'serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── Base ────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      color: #1A1612;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, h5, .font-display {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* ── Grain overlay ───────────────────────────────────────── */
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+    .grain > * { position: relative; z-index: 2; }
+
+    /* ── Ornament divider ────────────────────────────────────── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8B3A2E;
+    }
+    .ornament::before, .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #8B3A2E;
+      opacity: 0.35;
+    }
+    .ornament.left::after  { display: none; }
+    .ornament.left::before { max-width: 2.5rem; }
+
+    /* ── Navigation ──────────────────────────────────────────── */
+    .nav-link {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #3D3833;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #8B3A2E;
+      transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-link:hover { color: #8B3A2E; }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:focus-visible { outline: 2px solid #8B3A2E; outline-offset: 4px; border-radius: 2px; }
+
+    /* ── Buttons ─────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #8B3A2E;
+      color: #F4EDE2;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.875rem 1.875rem;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+      box-shadow: 0 4px 14px rgba(139, 58, 46, 0.32), 0 1px 3px rgba(26, 22, 18, 0.18);
+    }
+    .btn-primary:hover {
+      background: #7a3226;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(139, 58, 46, 0.38), 0 2px 6px rgba(26, 22, 18, 0.2);
+    }
+    .btn-primary:active  { transform: translateY(0); box-shadow: 0 2px 8px rgba(139, 58, 46, 0.22); }
+    .btn-primary:focus-visible { outline: 2px solid #8B3A2E; outline-offset: 3px; }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: #F4EDE2;
+      border: 1.5px solid rgba(244, 237, 226, 0.35);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.875rem 1.875rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .btn-ghost:hover {
+      border-color: rgba(244, 237, 226, 0.75);
+      background: rgba(244, 237, 226, 0.07);
+      transform: translateY(-2px);
+    }
+    .btn-ghost:active  { transform: translateY(0); }
+    .btn-ghost:focus-visible { outline: 2px solid #F4EDE2; outline-offset: 3px; }
+
+    /* ── Cards ───────────────────────────────────────────────── */
+    .feature-card {
+      background: #fff;
+      border: 1px solid rgba(201, 194, 180, 0.45);
+      border-radius: 3px;
+      padding: 2rem;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.25s ease;
+      box-shadow: 0 2px 8px rgba(26, 22, 18, 0.05), 0 1px 2px rgba(26, 22, 18, 0.04);
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(26, 22, 18, 0.1), 0 3px 8px rgba(26, 22, 18, 0.06);
+    }
+
+    .resource-card {
+      background: #fff;
+      border: 1px solid rgba(201, 194, 180, 0.5);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.25s ease;
+      box-shadow: 0 2px 8px rgba(26, 22, 18, 0.05);
+    }
+    .resource-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(26, 22, 18, 0.1);
+    }
+
+    /* ── Marquee ─────────────────────────────────────────────── */
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── Email input ─────────────────────────────────────────── */
+    .email-input {
+      background: rgba(244, 237, 226, 0.07);
+      border: 1.5px solid rgba(244, 237, 226, 0.22);
+      color: #F4EDE2;
+      padding: 0.875rem 1.25rem;
+      border-radius: 2px;
+      font-family: 'Lora', serif;
+      font-size: 0.9375rem;
+      width: 100%;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .email-input::placeholder { color: rgba(244, 237, 226, 0.35); }
+    .email-input:focus {
+      outline: none;
+      border-color: rgba(244, 237, 226, 0.55);
+      background: rgba(244, 237, 226, 0.11);
+    }
+
+    /* ── Stat number ─────────────────────────────────────────── */
+    .stat-num {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 2.25rem;
+      line-height: 1;
+      color: #8B3A2E;
+    }
+    .stat-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #3D3833;
+      margin-top: 0.3rem;
+    }
+
+    /* ── Icon badge ──────────────────────────────────────────── */
+    .icon-badge {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 3px;
+      background: rgba(139, 58, 46, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Footer social ───────────────────────────────────────── */
+    .social-btn {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 3px;
+      background: rgba(244, 237, 226, 0.07);
+      color: rgba(244, 237, 226, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .social-btn:hover {
+      background: rgba(244, 237, 226, 0.13);
+      color: #F4EDE2;
+    }
+    .social-btn:focus-visible { outline: 2px solid #F4EDE2; outline-offset: 3px; }
+
+    /* ── Tag pill ────────────────────────────────────────────── */
+    .tag-pill {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: #8B3A2E;
+      color: #F4EDE2;
+      padding: 0.25rem 0.75rem;
+      border-radius: 2px;
+    }
+
+    /* ── Read more link ──────────────────────────────────────── */
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8B3A2E;
+      transition: color 0.2s ease, gap 0.2s ease;
+    }
+    .read-more:hover { color: #7a3226; gap: 0.625rem; }
+    .read-more:focus-visible { outline: 2px solid #8B3A2E; outline-offset: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════════════════ -->
+<header class="sticky top-0 z-50 bg-parchment"
+  style="border-bottom: 1px solid rgba(201,194,180,0.4);
+         box-shadow: 0 2px 16px rgba(26,22,18,0.07);">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between" style="height: 5rem;">
+
+      <!-- Logo -->
+      <a href="#" class="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sienna focus-visible:ring-offset-2 rounded">
+        <img
+          src="brand_assets/Logo Variation 1.png"
+          alt="The Practical Pastor"
+          style="height: 2.75rem; width: auto;"
+        />
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
+        <a href="#about"     class="nav-link">About</a>
+        <a href="#benefits"  class="nav-link">Benefits</a>
+        <a href="#resources" class="nav-link">Resources</a>
+        <a href="#join"      class="nav-link">Join</a>
+      </nav>
+
+      <!-- CTA -->
+      <a href="#join" class="btn-primary hidden md:inline-flex">
+        Subscribe Free
+        <svg style="width:0.875rem;height:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+        </svg>
+      </a>
+
+      <!-- Mobile menu button -->
+      <button
+        class="md:hidden p-2 rounded text-charcoal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sienna"
+        style="color:#3D3833;"
+        aria-label="Open navigation menu"
+        onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+      >
+        <svg style="width:1.5rem;height:1.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden pb-6 border-t border-stone/30 pt-4">
+      <nav class="flex flex-col gap-4" aria-label="Mobile navigation">
+        <a href="#about"     class="nav-link" onclick="document.getElementById('mobile-menu').classList.add('hidden')">About</a>
+        <a href="#benefits"  class="nav-link" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Benefits</a>
+        <a href="#resources" class="nav-link" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Resources</a>
+        <a href="#join"      class="nav-link" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Join</a>
+        <a href="#join" class="btn-primary self-start mt-2">Subscribe Free</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════════════ -->
+<section class="grain relative overflow-hidden" style="background: #1A1612;">
+
+  <!-- Radial depth layers -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div style="position:absolute;top:-15%;right:-8%;width:55%;height:80%;
+      background:radial-gradient(ellipse,rgba(139,58,46,0.18) 0%,transparent 68%);"></div>
+    <div style="position:absolute;bottom:-10%;left:-5%;width:45%;height:65%;
+      background:radial-gradient(ellipse,rgba(61,56,51,0.6) 0%,transparent 70%);"></div>
+    <div style="position:absolute;top:40%;left:30%;width:40%;height:50%;
+      background:radial-gradient(ellipse,rgba(139,58,46,0.07) 0%,transparent 70%);"></div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-8" style="padding-top:7rem;padding-bottom:7rem;">
+    <div style="max-width:42rem;">
+
+      <!-- Eyebrow -->
+      <div class="ornament" style="justify-content:flex-start;margin-bottom:2rem;">
+        <span>Where Theology Meets Real-Life Ministry</span>
+        <span style="flex:none;"></span>
+      </div>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Montserrat',sans-serif;font-weight:800;
+        font-size:clamp(2.5rem,5.5vw,4.75rem);line-height:1.04;
+        letter-spacing:-0.035em;color:#F4EDE2;">
+        Equipping the<br/>
+        <em style="font-style:normal;color:#8B3A2E;">Faithful Shepherd.</em>
+      </h1>
+
+      <!-- Sub-headline -->
+      <p style="margin-top:1.75rem;font-family:'Lora',serif;font-size:1.125rem;
+        line-height:1.75;color:rgba(244,237,226,0.7);max-width:34rem;">
+        Practical resources, real conversations, and lasting community — built for pastors who pour themselves out for God's people every single week.
+      </p>
+
+      <!-- Scripture quote -->
+      <blockquote style="margin-top:2rem;padding-left:1.25rem;
+        border-left:2px solid rgba(139,58,46,0.5);">
+        <p style="font-family:'Lora',serif;font-style:italic;font-size:0.9375rem;
+          line-height:1.7;color:rgba(244,237,226,0.45);">
+          "Be shepherds of God's flock that is under your care, watching over them — not because you must, but because you are willing, as God wants you to be."
+        </p>
+        <footer style="margin-top:0.5rem;font-family:'Montserrat',sans-serif;
+          font-weight:700;font-size:0.6875rem;letter-spacing:0.16em;
+          text-transform:uppercase;color:#8B3A2E;">
+          — 1 Peter 5:2 (NIV)
+        </footer>
+      </blockquote>
+
+      <!-- CTAs -->
+      <div style="margin-top:2.75rem;display:flex;flex-wrap:wrap;gap:1rem;">
+        <a href="#join" class="btn-primary">
+          Join the Community
+          <svg style="width:1rem;height:1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
+        </a>
+        <a href="#about" class="btn-ghost">Learn More</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     MARQUEE STRIP
+══════════════════════════════════════════════════════════ -->
+<div style="background:#8B3A2E;overflow:hidden;padding:0.875rem 0;" aria-hidden="true">
+  <div class="marquee-track">
+    <!-- Set 1 -->
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Semper Fidelis</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Practical Ministry Resources</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Semper Paratus</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Where Theology Meets Real-Life Ministry</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Community · Clarity · Calling</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+    <!-- Set 2 (duplicate for seamless loop) -->
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Semper Fidelis</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Practical Ministry Resources</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Semper Paratus</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Where Theology Meets Real-Life Ministry</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+    <span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#F4EDE2;padding:0 2.5rem;">Community · Clarity · Calling</span>
+    <span style="color:rgba(244,237,226,0.3);padding:0 0.25rem;">✦</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     ABOUT / MISSION
+══════════════════════════════════════════════════════════ -->
+<section id="about" style="background:#F4EDE2;padding:6rem 0;">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+      <!-- Text side -->
+      <div>
+        <div class="ornament left" style="margin-bottom:1.5rem;">
+          <span>Our Mission</span>
+        </div>
+
+        <h2 style="font-family:'Montserrat',sans-serif;font-weight:800;
+          font-size:clamp(2rem,3.5vw,3.125rem);line-height:1.08;
+          letter-spacing:-0.03em;color:#1A1612;">
+          Ministry is hard.<br/>You shouldn't do it alone.
+        </h2>
+
+        <p style="margin-top:1.5rem;font-family:'Lora',serif;font-size:1.0625rem;
+          line-height:1.78;color:#3D3833;">
+          The Practical Pastor Group exists to equip and encourage the men and women who show up week after week — writing sermons, counseling families, leading boards, and caring for their flocks — often without anyone asking how <em>they're</em> doing.
+        </p>
+        <p style="margin-top:1rem;font-family:'Lora',serif;font-size:1.0625rem;
+          line-height:1.78;color:#3D3833;">
+          We're not a theological debate club. We're a community of ministry practitioners sharing honest, field-tested resources to help you lead well, preach with confidence, and sustain the long haul.
+        </p>
+
+        <!-- Stats -->
+        <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(201,194,180,0.5);
+          display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
+          <div>
+            <div class="stat-num">500+</div>
+            <div class="stat-label">Members</div>
+          </div>
+          <div>
+            <div class="stat-num">200+</div>
+            <div class="stat-label">Resources</div>
+          </div>
+          <div>
+            <div class="stat-num">50+</div>
+            <div class="stat-label">Denominations</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual side -->
+      <div style="position:relative;padding-bottom:2.5rem;">
+        <div style="border-radius:3px;overflow:hidden;
+          box-shadow:0 24px 56px rgba(26,22,18,0.18),0 6px 18px rgba(26,22,18,0.1);">
+          <div style="position:relative;">
+            <img
+              src="https://placehold.co/640x500/3D3833/C9C2B4?text=Community+Photo"
+              alt="The Practical Pastor Group community"
+              style="width:100%;display:block;"
+            />
+            <div style="position:absolute;inset:0;
+              background:linear-gradient(to top,rgba(26,22,18,0.45) 0%,transparent 55%);"></div>
+          </div>
+        </div>
+
+        <!-- Floating testimonial card -->
+        <div style="position:absolute;bottom:0;left:-1.5rem;max-width:17rem;
+          padding:1.5rem;border-radius:3px;background:#8B3A2E;
+          box-shadow:0 16px 40px rgba(139,58,46,0.38);">
+          <p style="font-family:'Lora',serif;font-style:italic;
+            color:#F4EDE2;font-size:0.9375rem;line-height:1.65;">
+            "Finally — a community that actually understands what Monday mornings feel like."
+          </p>
+          <p style="margin-top:0.875rem;font-family:'Montserrat',sans-serif;font-weight:700;
+            font-size:0.6875rem;letter-spacing:0.12em;text-transform:uppercase;
+            color:rgba(244,237,226,0.6);">
+            — Pastor, Rural Church, Ohio
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     BENEFITS / FEATURES
+══════════════════════════════════════════════════════════ -->
+<section id="benefits" style="background:#fff;padding:6rem 0;">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+    <!-- Section header -->
+    <div style="text-align:center;max-width:38rem;margin:0 auto 4rem;">
+      <div class="ornament" style="margin-bottom:1.25rem;">
+        <span>What You'll Get</span>
+      </div>
+      <h2 style="font-family:'Montserrat',sans-serif;font-weight:800;
+        font-size:clamp(1.875rem,3vw,2.875rem);line-height:1.08;
+        letter-spacing:-0.03em;color:#1A1612;">
+        Everything a pastor needs.<br/>Nothing that wastes your time.
+      </h2>
+      <p style="margin-top:1rem;font-family:'Lora',serif;font-size:1.0625rem;
+        line-height:1.75;color:#3D3833;">
+        Practical tools, genuine community, and real encouragement — built for ministry practitioners, not ministry spectators.
+      </p>
+    </div>
+
+    <!-- Feature grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:1.5rem;">
+
+      <!-- Card: Sermon Resources -->
+      <div class="feature-card">
+        <div class="icon-badge">
+          <svg style="width:1.375rem;height:1.375rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.0625rem;
+          letter-spacing:-0.01em;color:#1A1612;">Sermon Resources</h3>
+        <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.9375rem;
+          line-height:1.72;color:#3D3833;">
+          Outlines, illustrations, exegetical guides, and ready-to-adapt series templates — built by pastors, for pastors.
+        </p>
+      </div>
+
+      <!-- Card: Peer Community -->
+      <div class="feature-card">
+        <div class="icon-badge">
+          <svg style="width:1.375rem;height:1.375rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.0625rem;
+          letter-spacing:-0.01em;color:#1A1612;">Peer Community</h3>
+        <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.9375rem;
+          line-height:1.72;color:#3D3833;">
+          A private group of ministry leaders who <em>get it</em> — share wins, ask hard questions, and find the collegial support your role often lacks.
+        </p>
+      </div>
+
+      <!-- Card: Ministry Training -->
+      <div class="feature-card">
+        <div class="icon-badge">
+          <svg style="width:1.375rem;height:1.375rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.0625rem;
+          letter-spacing:-0.01em;color:#1A1612;">Ministry Training</h3>
+        <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.9375rem;
+          line-height:1.72;color:#3D3833;">
+          Courses, workshops, and coaching content on leadership, pastoral care, church administration, and spiritual formation.
+        </p>
+      </div>
+
+      <!-- Card: Weekly Encouragement -->
+      <div class="feature-card">
+        <div class="icon-badge">
+          <svg style="width:1.375rem;height:1.375rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.981l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.0625rem;
+          letter-spacing:-0.01em;color:#1A1612;">Weekly Encouragement</h3>
+        <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.9375rem;
+          line-height:1.72;color:#3D3833;">
+          Curated devotionals, leadership reflections, and honest perspectives on the pastor's life — delivered straight to your inbox.
+        </p>
+      </div>
+
+      <!-- Card: Church Templates -->
+      <div class="feature-card">
+        <div class="icon-badge">
+          <svg style="width:1.375rem;height:1.375rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.0625rem;
+          letter-spacing:-0.01em;color:#1A1612;">Church Templates</h3>
+        <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.9375rem;
+          line-height:1.72;color:#3D3833;">
+          Bulletins, policy docs, elder meeting agendas, budget worksheets — the administrative backbone every church needs.
+        </p>
+      </div>
+
+      <!-- Card: Expert Access -->
+      <div class="feature-card">
+        <div class="icon-badge">
+          <svg style="width:1.375rem;height:1.375rem;color:#8B3A2E;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/>
+          </svg>
+        </div>
+        <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.0625rem;
+          letter-spacing:-0.01em;color:#1A1612;">Expert Access</h3>
+        <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.9375rem;
+          line-height:1.72;color:#3D3833;">
+          Q&amp;As, guest contributors, and conversations with seasoned pastors, church planters, and ministry thought leaders.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     EDUCATIONAL RESOURCES
+══════════════════════════════════════════════════════════ -->
+<section id="resources" style="background:#F4EDE2;padding:6rem 0;">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+    <!-- Section header -->
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:3rem;">
+      <div>
+        <div class="ornament left" style="margin-bottom:1.25rem;">
+          <span>Educational Resources</span>
+        </div>
+        <h2 style="font-family:'Montserrat',sans-serif;font-weight:800;
+          font-size:clamp(1.875rem,3vw,2.875rem);line-height:1.08;
+          letter-spacing:-0.03em;color:#1A1612;">
+          From the Resource Library
+        </h2>
+      </div>
+      <a href="#" class="btn-primary" style="flex-shrink:0;">
+        Browse All Resources
+      </a>
+    </div>
+
+    <!-- Cards -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:1.5rem;">
+
+      <!-- Resource 1 -->
+      <article class="resource-card">
+        <div style="position:relative;height:11rem;overflow:hidden;">
+          <img src="https://placehold.co/640x320/3D3833/C9C2B4?text=Preaching"
+            alt="" style="width:100%;height:100%;object-fit:cover;display:block;" aria-hidden="true" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,22,18,0.45) 0%,transparent 55%);"></div>
+          <span class="tag-pill" style="position:absolute;top:1rem;left:1rem;">Preaching</span>
+        </div>
+        <div style="padding:1.5rem;">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;
+            line-height:1.35;color:#1A1612;">
+            How to Preach Difficult Texts Without Losing Your Congregation
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.68;color:#3D3833;">
+            Practical frameworks for navigating hard passages with theological integrity and pastoral sensitivity.
+          </p>
+          <a href="#" class="read-more" style="margin-top:1rem;">
+            Read Article
+            <svg style="width:0.75rem;height:0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Resource 2 -->
+      <article class="resource-card">
+        <div style="position:relative;height:11rem;overflow:hidden;">
+          <img src="https://placehold.co/640x320/1A1612/C9C2B4?text=Leadership"
+            alt="" style="width:100%;height:100%;object-fit:cover;display:block;" aria-hidden="true" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,22,18,0.45) 0%,transparent 55%);"></div>
+          <span class="tag-pill" style="position:absolute;top:1rem;left:1rem;">Leadership</span>
+        </div>
+        <div style="padding:1.5rem;">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;
+            line-height:1.35;color:#1A1612;">
+            Leading Elders Well: A Guide to Healthier Board Meetings
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.68;color:#3D3833;">
+            Proven structures and conversations that move your leadership team from reactive to vision-driven.
+          </p>
+          <a href="#" class="read-more" style="margin-top:1rem;">
+            Read Article
+            <svg style="width:0.75rem;height:0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Resource 3 -->
+      <article class="resource-card">
+        <div style="position:relative;height:11rem;overflow:hidden;">
+          <img src="https://placehold.co/640x320/8B3A2E/F4EDE2?text=Pastoral+Care"
+            alt="" style="width:100%;height:100%;object-fit:cover;display:block;" aria-hidden="true" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,22,18,0.45) 0%,transparent 55%);"></div>
+          <span class="tag-pill" style="position:absolute;top:1rem;left:1rem;">Pastoral Care</span>
+        </div>
+        <div style="padding:1.5rem;">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;
+            line-height:1.35;color:#1A1612;">
+            Caring for Yourself So You Can Care for Others
+          </h3>
+          <p style="margin-top:0.625rem;font-family:'Lora',serif;font-size:0.875rem;
+            line-height:1.68;color:#3D3833;">
+            Sustainable rhythms and honest conversations about pastoral burnout, sabbath, and self-care in ministry.
+          </p>
+          <a href="#" class="read-more" style="margin-top:1rem;">
+            Read Article
+            <svg style="width:0.75rem;height:0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     EMAIL SIGNUP / JOIN
+══════════════════════════════════════════════════════════ -->
+<section id="join" class="grain relative overflow-hidden" style="background:#3D3833;">
+  <!-- Depth layers -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div style="position:absolute;top:0;right:0;width:55%;height:100%;
+      background:radial-gradient(ellipse at top right,rgba(139,58,46,0.22) 0%,transparent 65%);"></div>
+    <div style="position:absolute;bottom:0;left:0;width:40%;height:60%;
+      background:radial-gradient(ellipse at bottom left,rgba(26,22,18,0.4) 0%,transparent 70%);"></div>
+  </div>
+
+  <div class="relative max-w-2xl mx-auto px-6 lg:px-8 text-center" style="padding-top:6rem;padding-bottom:6rem;">
+
+    <!-- Logo (inverted) -->
+    <img
+      src="brand_assets/Icon Only.png"
+      alt=""
+      aria-hidden="true"
+      style="height:4.5rem;width:auto;margin:0 auto 2rem;
+        filter:brightness(0) invert(1);opacity:0.6;"
+    />
+
+    <div class="ornament" style="margin-bottom:1.25rem;color:#C9C2B4;">
+      <span style="color:#C9C2B4;">Join the Community</span>
+    </div>
+
+    <h2 style="font-family:'Montserrat',sans-serif;font-weight:800;
+      font-size:clamp(2rem,4.5vw,3.375rem);line-height:1.07;
+      letter-spacing:-0.035em;color:#F4EDE2;">
+      Ready to stop going it alone?
+    </h2>
+
+    <p style="margin-top:1.25rem;font-family:'Lora',serif;font-size:1.0625rem;
+      line-height:1.75;color:rgba(244,237,226,0.65);">
+      Subscribe for free weekly resources, ministry encouragement, and early access to The Practical Pastor Group community.
+    </p>
+
+    <!-- Form -->
+    <form
+      style="margin-top:2.5rem;display:flex;flex-wrap:wrap;gap:0.75rem;max-width:30rem;margin-left:auto;margin-right:auto;"
+      onsubmit="handleSubscribe(event)"
+      novalidate
+    >
+      <input
+        id="email-input"
+        type="email"
+        class="email-input"
+        placeholder="your@email.com"
+        required
+        aria-label="Email address"
+        style="flex:1;min-width:0;"
+      />
+      <button type="submit" class="btn-primary" style="flex-shrink:0;">
+        Subscribe Free
+        <svg style="width:0.875rem;height:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+        </svg>
+      </button>
+    </form>
+
+    <div id="subscribe-success" style="display:none;margin-top:1rem;
+      font-family:'Montserrat',sans-serif;font-weight:600;font-size:0.875rem;
+      letter-spacing:0.05em;color:#C9C2B4;">
+      ✓ You're on the list — welcome to the community!
+    </div>
+
+    <p style="margin-top:1.125rem;font-family:'Montserrat',sans-serif;font-size:0.7rem;
+      letter-spacing:0.06em;color:rgba(244,237,226,0.28);">
+      No spam. Unsubscribe anytime. We honor your inbox the way you honor your pulpit.
+    </p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════════ -->
+<footer style="background:#1A1612;border-top:1px solid rgba(201,194,180,0.07);">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8" style="padding-top:4rem;padding-bottom:4rem;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:2.5rem;margin-bottom:3rem;">
+
+      <!-- Brand -->
+      <div style="grid-column:span 2 / span 2;">
+        <img
+          src="brand_assets/Primary Logo.png"
+          alt="The Practical Pastor"
+          style="height:3.5rem;width:auto;margin-bottom:1rem;
+            filter:brightness(0) invert(1);opacity:0.75;"
+        />
+        <p style="font-family:'Lora',serif;font-size:0.9375rem;line-height:1.7;
+          color:rgba(244,237,226,0.42);max-width:18rem;">
+          Where theology meets real-life ministry.
+        </p>
+        <!-- Socials -->
+        <div style="display:flex;gap:0.625rem;margin-top:1.25rem;">
+          <a href="#" class="social-btn" aria-label="Twitter / X">
+            <svg style="width:1rem;height:1rem;" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.741l7.73-8.835L1.254 2.25H8.08l4.258 5.626zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg style="width:1rem;height:1rem;" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg style="width:1rem;height:1rem;" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Community links -->
+      <div>
+        <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.6875rem;
+          letter-spacing:0.16em;text-transform:uppercase;color:#8B3A2E;margin-bottom:1.125rem;">
+          Community
+        </h4>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.75rem;">
+          <li><a href="#about"  class="footer-link" style="font-family:'Lora',serif;font-size:0.9375rem;color:rgba(244,237,226,0.48);transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.85)'" onmouseout="this.style.color='rgba(244,237,226,0.48)'">About Us</a></li>
+          <li><a href="#join"   class="footer-link" style="font-family:'Lora',serif;font-size:0.9375rem;color:rgba(244,237,226,0.48);transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.85)'" onmouseout="this.style.color='rgba(244,237,226,0.48)'">Join the Group</a></li>
+          <li><a href="#"       class="footer-link" style="font-family:'Lora',serif;font-size:0.9375rem;color:rgba(244,237,226,0.48);transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.85)'" onmouseout="this.style.color='rgba(244,237,226,0.48)'">Member Stories</a></li>
+          <li><a href="#"       class="footer-link" style="font-family:'Lora',serif;font-size:0.9375rem;color:rgba(244,237,226,0.48);transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.85)'" onmouseout="this.style.color='rgba(244,237,226,0.48)'">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Resource links -->
+      <div>
+        <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.6875rem;
+          letter-spacing:0.16em;text-transform:uppercase;color:#8B3A2E;margin-bottom:1.125rem;">
+          Resources
+        </h4>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.75rem;">
+          <li><a href="#" style="font-family:'Lora',serif;font-size:0.9375rem;color:rgba(244,237,226,0.48);transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.85)'" onmouseout="this.style.color='rgba(244,237,226,0.48)'">Sermon Library</a></li>
+          <li><a href="#" style="font-family:'Lora',serif;font-size:0.9375rem;color:rgba(244,237,226,0.48);transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.85)'" onmouseout="this.style.color='rgba(244,237,226,0.48)'">Ministry Templates</a></li>
+          <li><a href="#" style="font-family:'Lora',serif;font-size:0.9375rem;color:rgba(244,237,226,0.48);transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.85)'" onmouseout="this.style.color='rgba(244,237,226,0.48)'">Courses &amp; Training</a></li>
+          <li><a href="#" style="font-family:'Lora',serif;font-size:0.9375rem;color:rgba(244,237,226,0.48);transition:color 0.2s;" onmouseover="this.style.color='rgba(244,237,226,0.85)'" onmouseout="this.style.color='rgba(244,237,226,0.48)'">Blog</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div style="border-top:1px solid rgba(244,237,226,0.07);padding-top:2rem;
+      display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;">
+      <p style="font-family:'Montserrat',sans-serif;font-size:0.6875rem;letter-spacing:0.05em;
+        color:rgba(244,237,226,0.22);">
+        © 2026 The Practical Pastor. All rights reserved.
+      </p>
+      <div style="display:flex;gap:1.5rem;">
+        <a href="#" style="font-family:'Montserrat',sans-serif;font-size:0.6875rem;letter-spacing:0.05em;
+          color:rgba(244,237,226,0.22);transition:color 0.2s;"
+          onmouseover="this.style.color='rgba(244,237,226,0.55)'" onmouseout="this.style.color='rgba(244,237,226,0.22)'">
+          Privacy Policy
+        </a>
+        <a href="#" style="font-family:'Montserrat',sans-serif;font-size:0.6875rem;letter-spacing:0.05em;
+          color:rgba(244,237,226,0.22);transition:color 0.2s;"
+          onmouseover="this.style.color='rgba(244,237,226,0.55)'" onmouseout="this.style.color='rgba(244,237,226,0.22)'">
+          Terms of Service
+        </a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+
+<script>
+  function handleSubscribe(e) {
+    e.preventDefault();
+    const input = document.getElementById('email-input');
+    if (!input.value || !input.validity.valid) return;
+    input.closest('form').style.display = 'none';
+    document.getElementById('subscribe-success').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

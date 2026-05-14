@@ -1,0 +1,13 @@
+# Mac system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Mac Pages documents
+*.pages
+
+# Local dev server
+serve.mjs
+
+# Claude Code internal
+CLAUDE.md
