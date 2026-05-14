@@ -280,7 +280,7 @@
             aria-label="Your email address"
             style="flex:1;min-width:0;"
           />
-          <button type="submit" class="btn-primary">
+          <button type="submit" class="btn-primary" id="notify-btn">
             Notify Me
           </button>
         </div>
@@ -288,6 +288,8 @@
           color:rgba(244,237,226,0.7);text-align:left;">
           No spam. Unsubscribe anytime. We honor your email address like you honor your pulpit.
         </p>
+        <p id="notify-error" style="display:none;font-family:'Montserrat',sans-serif;
+          font-size:0.75rem;letter-spacing:0.04em;color:#e87c6e;text-align:left;"></p>
       </form>
 
       <!-- Success state -->
@@ -357,12 +359,43 @@
 </div>
 
 <script>
-  function handleNotify(e) {
+  async function handleNotify(e) {
     e.preventDefault();
-    const input = document.getElementById('notify-email');
+
+    const input  = document.getElementById('notify-email');
+    const btn    = document.getElementById('notify-btn');
+    const errEl  = document.getElementById('notify-error');
+
     if (!input.validity.valid) return;
-    document.getElementById('notify-form').style.display = 'none';
-    document.getElementById('notify-success').style.display = 'block';
+
+    // Loading state
+    btn.disabled    = true;
+    btn.textContent = 'Sending…';
+    errEl.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email: input.value }),
+      });
+
+      if (res.ok) {
+        document.getElementById('notify-form').style.display    = 'none';
+        document.getElementById('notify-success').style.display = 'block';
+      } else {
+        const data = await res.json().catch(() => ({}));
+        errEl.textContent   = data.error || 'Something went wrong. Please try again.';
+        errEl.style.display = 'block';
+        btn.disabled        = false;
+        btn.textContent     = 'Notify Me';
+      }
+    } catch {
+      errEl.textContent   = 'Unable to connect. Please try again.';
+      errEl.style.display = 'block';
+      btn.disabled        = false;
+      btn.textContent     = 'Notify Me';
+    }
   }
 </script>
 </body>

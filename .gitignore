@@ -11,3 +11,8 @@ serve.mjs
 
 # Claude Code internal
 CLAUDE.md
+
+# Environment variables — never commit these
+.env
+.env.local
+.env*.local
